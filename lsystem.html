@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <script src="processing.min.js"></script> 
+    <script type="text/javascript">
+     function getParameterByName(name, url) {
+          if (!url) url = window.location.href;
+          name = name.replace(/[\[\]]/g, "\\$&");
+          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+              results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+     function createProcessing() {
+       var cv = document.createElement("canvas");
+       cv.id = "processing"
+       Processing.loadSketchFromSources(cv, [getParameterByName("name") + ".pde"]);
+
+       var ce = document.getElementById("content");
+       ce.appendChild(cv);
+     }
+
+     function parseRules(r) {
+       var rules = {};
+       r.replace(/\s*/g, "").split(',').forEach(function(s) {
+         var splits = s.split(':');
+         rules[splits[0]] = splits[1];
+       });
+
+       return rules;
+     }
+
+     function onLoad() {
+       createProcessing();
+
+       document.getElementById("play").onclick = function(e) {
+         var rules = parseRules(document.getElementById("rules").value);
+
+         var pjs = Processing.getInstanceById("processing");
+         var lsystem = document.getElementById("initial").value;
+         var iters = document.getElementById("iterations").value;
+         for(var i = 0; i < iters; i++) {
+          var newText = "";
+          for(var i = 0; i < lsystem.length; i++) {
+            var c = lsystem[i];
+            newText += rules[c] ? rules[c] : c;
+          }
+          lsystem = newText;
+         }
+
+         pjs.drawLSystem(lsystem)
+       }
+     }
+
+     window.onload = onLoad;
+
+
+
+    </script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <div id="input">
+      Initial: <input id="initial" type="text" />
+      Rules: <input id="rules" type="text" />
+      Iterations: <input id="iterations" type="text" />
+      <button id="play" type="button" > Play </button>
+    </div>
+  </body>
+</html>
