@@ -39,11 +39,11 @@
 
          var pjs = Processing.getInstanceById("processing");
          var lsystem = document.getElementById("initial").value;
-         var iters = document.getElementById("iterations").value;
+         var iters = parseInt(document.getElementById("iterations").value);
          for(var i = 0; i < iters; i++) {
           var newText = "";
-          for(var i = 0; i < lsystem.length; i++) {
-            var c = lsystem[i];
+          for(var j = 0; j < lsystem.length; j++) {
+            var c = lsystem[j];
             newText += rules[c] ? rules[c] : c;
           }
           lsystem = newText;

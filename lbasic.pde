@@ -1,6 +1,6 @@
 void setup ()
 {
-  size (700, 700);
+  size (400, 400);
   smooth();
 
   noLoop();
@@ -12,11 +12,13 @@ void drawLSystem(String s) {
   strokeWeight(1);
   stroke(255, 0, 0);
 
+  text(s, 10, 30);
+
   float lineLength = 10;
 
-  Point p = new Point(700 * 0.5, 700 * 0.9);
+  Point p = new Point(400 * 0.5, 400 * 0.9);
 
-  float theta = -HALF_PI;
+  float theta = -(25.0 * PI) / 180.0;
   float pi = PI;
 
   PointStack ps = new PointStack();
