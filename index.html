@@ -13,11 +13,23 @@
       } 
 
      function createProcessing() {
+       var filename =  getParameterByName("name") + ".pde";
        var cv = document.createElement("canvas");
-       Processing.loadSketchFromSources(cv, [getParameterByName("name") + ".pde"]);
+       Processing.loadSketchFromSources(cv, [filename]);
      
        var ce = document.getElementById("content");
        ce.appendChild(cv);
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+          if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+              var codeContent = document.getElementById('code');
+              codeContent.innerText = xmlhttp.responseText;
+            /*document.getElementById('myDiv').appendChild(newTile);*/
+          }
+        };
+        xmlhttp.open('GET','/' + filename,true);
+        xmlhttp.send();
      }
 
      window.onload = createProcessing;
@@ -26,5 +38,6 @@
   </head>
   <body>
     <div id="content"></div>
+    <pre><code id="code"></code></pre>
   </body>
 </html>
